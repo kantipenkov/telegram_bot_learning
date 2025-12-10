@@ -1,0 +1,8 @@
+services:
+  telegrambotlearning:
+    image: telegrambotlearning
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
