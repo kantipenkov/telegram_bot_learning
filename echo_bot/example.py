@@ -1,7 +1,7 @@
 import os
 
 from aiogram import Bot, Dispatcher, F
-from aiogram.filters import Command, ChatMemberUpdatedFilter, KICKED, and_f
+from aiogram.filters import Command, ChatMemberUpdatedFilter, KICKED
 from aiogram.types import Message, ContentType, ChatMemberUpdated
 
 from filters import IsAdmin
@@ -15,7 +15,7 @@ except TypeError:
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-@dp.message(and_f(IsAdmin(ADMINS), Command(commands='start')))
+@dp.message(IsAdmin(ADMINS), Command(commands='start'))
 async def process_start_admin(message: Message):
     await message.answer('Admin?')
 
