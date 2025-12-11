@@ -1,13 +1,23 @@
 import os
 
 from aiogram import Bot, Dispatcher, F
-from aiogram.filters import Command, ChatMemberUpdatedFilter, KICKED
+from aiogram.filters import Command, ChatMemberUpdatedFilter, KICKED, and_f
 from aiogram.types import Message, ContentType, ChatMemberUpdated
 
-BOT_TOKEN = os.getenv("BOT_TOKEN", "")
+from filters import IsAdmin
+
+BOT_TOKEN = os.getenv('BOT_TOKEN', '')
+try:
+    ADMINS: list[int] = list(map(int, os.getenv('ADMINS', '').split(sep=',')))
+except TypeError:
+    ADMINS = []
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
+
+@dp.message(and_f(IsAdmin(ADMINS), Command(commands='start')))
+async def process_start_admin(message: Message):
+    await message.answer('Admin?')
 
 @dp.message(Command(commands='start'))
 async def process_start_help(message: Message):
@@ -29,9 +39,9 @@ async def send_sticker_echo(message:Message):
 
 @dp.message()
 async def send_echo(message: Message):
-    try:
+    if message.text:
         await message.reply(text=message.text)
-    except TypeError:
+    else:
         await message.reply(text='Unknown input type')
 
 
