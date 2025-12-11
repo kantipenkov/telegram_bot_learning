@@ -1,8 +1,8 @@
 import os
 
 from aiogram import Bot, Dispatcher, F
-from aiogram.filters import Command
-from aiogram.types import Message, ContentType
+from aiogram.filters import Command, ChatMemberUpdatedFilter, KICKED
+from aiogram.types import Message, ContentType, ChatMemberUpdated
 
 BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 
@@ -34,6 +34,10 @@ async def send_echo(message: Message):
     except TypeError:
         await message.reply(text='Unknown input type')
 
+
+@dp.my_chat_member(ChatMemberUpdatedFilter(member_status_changed=KICKED))
+async def process_user_blocked_bot(event: ChatMemberUpdated):
+    print(f"User {event.from_user.id} blocked the bot")
 
 if __name__ == '__main__':
     dp.run_polling(bot)
