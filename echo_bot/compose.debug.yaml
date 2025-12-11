@@ -1,6 +1,6 @@
 services:
-  telegrambotlearning:
-    image: telegrambotlearning
+  echobot:
+    image: echobot
     build:
       context: .
       dockerfile: ./Dockerfile
