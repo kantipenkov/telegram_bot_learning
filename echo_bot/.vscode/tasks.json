@@ -19,7 +19,7 @@
 				"docker-build"
 			],
 			"python": {
-				"file": "example.py"
+				"file": "main.py"
 			}
 		}
 	]
