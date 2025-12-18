@@ -1,50 +1,27 @@
-from aiogram import Bot, Dispatcher, F
-from aiogram.filters import CommandStart
-from aiogram.types import (
-    KeyboardButton,
-    Message,
-    ReplyKeyboardMarkup,
-    ReplyKeyboardRemove,
-)
-from environs import Env
+import asyncio
+import logging
 
-env = Env()
-env.read_env()
-BOT_TOKEN = env("BOT_TOKEN")
+from aiogram import Bot, Dispatcher
 
-bot = Bot(token=BOT_TOKEN)
-dp = Dispatcher()
-
-button_1 = KeyboardButton(text="Dogs")
-button_2 = KeyboardButton(text="Cucumbers")
-
-keyboard = ReplyKeyboardMarkup(
-    keyboard=[[button_1, button_2]],
-    resize_keyboard=True,
-    one_time_keyboard=True,  # this allows to hide keyboard automatically and retrieve it if user wishes by clicking on an icon
-)
+from config import config
+from handlers import buttons_example, command_start, general, polls
 
 
-@dp.message(CommandStart())
-async def process_start_command(message: Message):
-    await message.answer(text="What cats are more afraid of?", reply_markup=keyboard)
-
-
-@dp.message(F.text == "Cucumbers")
-async def cucumbers_answer(message: Message):
-    await message.answer(
-        text="Yes, sometimes cats are afraid of cucumbers a lot.",
-        # reply_markup=ReplyKeyboardRemove(), # remove keyboard completely
-    )
-
-
-@dp.message(F.text == "Dogs")
-async def dogs_answer(message: Message):
-    await message.answer(
-        text="Yes, cats are afraid of dogs but have you ever seen how they are afraid of cucumbers.",
-        # reply_markup=ReplyKeyboardRemove(),
-    )
+async def main() -> None:
+    log_level_mapping = logging.getLevelNamesMapping()
+    try:
+        log_level = log_level_mapping[config.log.level]
+    except KeyError:
+        log_level = log_level_mapping["DEBUG"]
+    logging.basicConfig(level=log_level, format=config.log.format)
+    bot = Bot(token=config.bot.token)
+    dp = Dispatcher()
+    dp.include_router(command_start.router)
+    dp.include_router(buttons_example.router)
+    dp.include_router(polls.router)
+    dp.include_router(general.router)
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
-    dp.run_polling(bot)
+    asyncio.run(main())
