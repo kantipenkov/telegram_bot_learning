@@ -2,13 +2,13 @@ from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from commands import BUTTONS_EXAMPLE
+from commands import Commands
 from keyboards.buttons_example import keyboard
 
 router = Router()
 
 
-@router.message(Command(commands=BUTTONS_EXAMPLE))
+@router.message(Command(commands=Commands.BUTTONS_EXAMPLE))
 async def buttons_answer(message: Message):
     await message.answer(text="What cats are more afraid of?", reply_markup=keyboard)
 

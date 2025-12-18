@@ -2,7 +2,7 @@ from aiogram.enums import PollType
 from aiogram.types import KeyboardButton, KeyboardButtonPollType, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from commands import CAT_POLL
+from commands import Commands
 from keyboards.command_start import home_btn
 
 _kb_builder = ReplyKeyboardBuilder()
@@ -20,7 +20,7 @@ _quiz_btn = KeyboardButton(
     text="Create quiz", request_poll=KeyboardButtonPollType(type=PollType.QUIZ)
 )
 
-_cat_poll = KeyboardButton(text=f"/{CAT_POLL}")
+_cat_poll = KeyboardButton(text=f"/{Commands.CAT_POLL}")
 
 _kb_builder.row(_poll_quiz_btn, _poll_btn, _quiz_btn, _cat_poll)
 _kb_builder.row(home_btn)

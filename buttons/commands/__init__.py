@@ -1,3 +1,5 @@
-from .commands import BUTTONS_EXAMPLE, CAT_POLL, POLL_EXAMPLE
+from .commands import Commands
 
-__all__ = ["BUTTONS_EXAMPLE", "POLL_EXAMPLE", "CAT_POLL"]
+__all__ = [
+    "Commands",
+]

@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 
 from config import config
-from handlers import buttons_example, command_start, general, polls
+from handlers import buttons_example, command_start, general, personal_data, polls
 
 
 async def main() -> None:
@@ -19,6 +19,7 @@ async def main() -> None:
     dp.include_router(command_start.router)
     dp.include_router(buttons_example.router)
     dp.include_router(polls.router)
+    dp.include_router(personal_data.router)
     dp.include_router(general.router)
     await dp.start_polling(bot)
 
