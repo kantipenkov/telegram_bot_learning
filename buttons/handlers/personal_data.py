@@ -22,7 +22,7 @@ async def process_contact(message: Message):
     logger.debug(message.model_dump_json(indent=4, exclude_none=True))
 
 
-@router.message(F.Location)
+@router.message(F.location)
 async def process_location(message: Message):
     await message.answer(
         text=f"Your location is: {message.location.latitude, message.location.longitude}"
