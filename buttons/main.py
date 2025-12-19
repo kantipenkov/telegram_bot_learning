@@ -10,6 +10,7 @@ from handlers import (
     buttons_example,
     command_start,
     general,
+    inline_buttons,
     personal_data,
     polls,
     shared_users,
@@ -51,6 +52,7 @@ async def main() -> None:
     dp.include_router(polls.router)
     dp.include_router(personal_data.router)
     dp.include_router(shared_users.router)
+    dp.include_router(inline_buttons.router)
     dp.include_router(general.router)
 
     dp.startup.register(set_main_menu)
@@ -59,5 +61,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
     asyncio.run(main())

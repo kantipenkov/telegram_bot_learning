@@ -11,3 +11,4 @@ class Commands(StrEnum):
     SELECT_USER = auto()
     SELECT_USERS = auto()
     SELECT_CHAT = auto()
+    INLINE_BUTTONS_EXAMPLE = auto()
