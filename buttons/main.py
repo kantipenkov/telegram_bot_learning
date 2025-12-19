@@ -2,7 +2,9 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
+from aiogram.types import BotCommand
 
+from commands import Commands
 from config import config
 from handlers import (
     buttons_example,
@@ -12,6 +14,23 @@ from handlers import (
     polls,
     shared_users,
 )
+
+
+async def set_main_menu(bot: Bot):
+    main_menu_commands = [
+        BotCommand(command="/start", description="Go to the start page"),
+        BotCommand(command=Commands.BUTTONS_EXAMPLE, description="See buttons example"),
+        BotCommand(command=Commands.POLL_EXAMPLE, description="Go to POll example"),
+        BotCommand(
+            command=Commands.PERSONAL_DATA,
+            description="Go to work with personal data example",
+        ),
+        BotCommand(
+            command=Commands.SHARED_USERS,
+            description="Go to work with shared users/chats example",
+        ),
+    ]
+    await bot.set_my_commands(main_menu_commands)
 
 
 async def main() -> None:
@@ -29,8 +48,10 @@ async def main() -> None:
     dp.include_router(personal_data.router)
     dp.include_router(shared_users.router)
     dp.include_router(general.router)
+    dp.startup.register(set_main_menu)
     await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
+    asyncio.run(main())
     asyncio.run(main())

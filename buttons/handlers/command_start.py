@@ -8,6 +8,6 @@ router = Router()
 
 
 @router.message(CommandStart())
-@router.message( F.text == "Home")
+@router.message(F.text == "Home")
 async def process_start_command(message: Message):
     await message.answer(text="Choose the demo", reply_markup=keyboard)

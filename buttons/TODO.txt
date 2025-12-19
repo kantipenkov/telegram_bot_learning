@@ -1,2 +1,0 @@
-add examples for location/phone requests
-add example with contacts and chats
