@@ -46,7 +46,6 @@ def create_option_callback(letter: str) -> None:
                 )
             await callback.answer(text=f"button with option {letter} is clicked")
 
-        # return option_click
     else:
         raise ValueError(
             "Input %s is invalid. Please pass single lowercase letter" % letter,
