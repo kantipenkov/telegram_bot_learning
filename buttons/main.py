@@ -2,7 +2,7 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
-from aiogram.types import BotCommand
+from aiogram.types import BotCommand, BotCommandScopeDefault
 
 from commands import Commands
 from config import config
@@ -33,6 +33,10 @@ async def set_main_menu(bot: Bot):
     await bot.set_my_commands(main_menu_commands)
 
 
+async def delete_commands(bot: Bot):
+    await bot.delete_my_commands(BotCommandScopeDefault())
+
+
 async def main() -> None:
     log_level_mapping = logging.getLevelNamesMapping()
     try:
@@ -48,7 +52,9 @@ async def main() -> None:
     dp.include_router(personal_data.router)
     dp.include_router(shared_users.router)
     dp.include_router(general.router)
+
     dp.startup.register(set_main_menu)
+    dp.shutdown.register(delete_commands)
     await dp.start_polling(bot)
 
 
