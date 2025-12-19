@@ -28,24 +28,23 @@ async def inline_buttons_example(message: Message):
 
 
 def create_option_callback(letter: str) -> None:
-    identifier = letter[0].lower()
-    if identifier in ascii_lowercase:
+    if len(letter) == 1 and letter.lower() == letter and letter in ascii_lowercase:
 
-        @router.callback_query(F.data == f"option_{identifier}")
+        @router.callback_query(F.data == f"option_{letter}")
         async def option_click(callback: CallbackQuery):
-            logger.debug(f"Option {identifier.upper} is clicked")
+            logger.debug(f"Option {letter.upper} is clicked")
             if (
                 not isinstance(callback.message, InaccessibleMessage)
                 and callback.message.text
             ):
                 text = callback.message.text
                 nums = list(map(int, re.findall(r"(\d+) times", text)))
-                nums[list(ascii_lowercase).index(identifier.lower())] += 1
+                nums[list(ascii_lowercase).index(letter.lower())] += 1
                 await callback.message.edit_text(
                     text=text_template % tuple(nums),
                     reply_markup=callback.message.reply_markup,
                 )
-            await callback.answer()
+            await callback.answer(text=f"button with option {letter} is clicked")
 
         # return option_click
     else:
@@ -62,7 +61,7 @@ async def reset_click(callback: CallbackQuery):
             await callback.message.edit_text(
                 text=text_template % (0, 0), reply_markup=callback.message.reply_markup
             )
-        await callback.answer()
+        await callback.answer(text="Reset button is clicked.")
 
 
 create_option_callback("a")
