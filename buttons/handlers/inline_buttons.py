@@ -7,8 +7,8 @@ from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import CallbackQuery, InaccessibleMessage, Message
 
-from commands import Commands
 from keyboards.inline_buttons import keyboard
+from lexicon import Commands
 
 logger = logging.getLogger(__name__)
 router = Router()

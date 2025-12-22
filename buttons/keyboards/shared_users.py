@@ -7,8 +7,8 @@ from aiogram.types import (
 )
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from commands import Commands
 from keyboards.command_start import home_btn
+from lexicon import Commands
 
 kb_builder = ReplyKeyboardBuilder()
 request_user_btn = KeyboardButton(

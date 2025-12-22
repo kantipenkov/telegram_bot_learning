@@ -1,7 +1,7 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from commands import Commands
+from lexicon import Commands
 
 # dogs_button = KeyboardButton(text="Dogs")
 # cucumbers_button = KeyboardButton(text="Cucumbers")

@@ -4,8 +4,8 @@ from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from commands import Commands
 from keyboards.shared_users import keyboard
+from lexicon import Commands, lexicon
 
 logger = logging.getLogger(__name__)
 router = Router()
@@ -13,7 +13,7 @@ router = Router()
 
 @router.message(Command(commands=Commands.SHARED_USERS))
 async def shared_users_example(message: Message):
-    await message.answer(text="select what to chare", reply_markup=keyboard)
+    await message.answer(text=lexicon.shared_user_banner, reply_markup=keyboard)
 
 
 # catch shared user

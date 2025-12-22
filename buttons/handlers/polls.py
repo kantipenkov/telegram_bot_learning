@@ -5,8 +5,8 @@ from aiogram.enums import PollType
 from aiogram.filters import Command
 from aiogram.types import Message, PollAnswer, TelegramObject
 
-from commands import Commands
 from keyboards.polls import keyboard
+from lexicon import Commands, lexicon
 
 logger = logging.getLogger(__name__)
 router = Router()
@@ -19,17 +19,15 @@ def dump(message: TelegramObject, prefix: str = "Created poll"):
 
 @router.message(Command(commands=Commands.POLL_EXAMPLE))
 async def poll_example(message: Message):
-    await message.answer(
-        text="What operation with polls do you want to execute?", reply_markup=keyboard
-    )
+    await message.answer(text=lexicon.poll_banner, reply_markup=keyboard)
 
 
 # create cat poll
 @router.message(Command(commands=Commands.CAT_POLL))
 async def create_cat_poll(message: Message):
     await message.answer_poll(
-        question="What cats are more afraid of?",
-        options=["Dogs", "Cucumbers"],
+        question=lexicon.cat_question,
+        options=[lexicon.cat_dog, lexicon.cat_cucumber],
         is_anonymous=False,
         type=PollType.REGULAR,
     )

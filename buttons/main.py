@@ -4,7 +4,6 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.types import BotCommand, BotCommandScopeDefault
 
-from commands import Commands
 from config import config
 from handlers import (
     buttons_example,
@@ -15,6 +14,7 @@ from handlers import (
     polls,
     shared_users,
 )
+from lexicon import Commands
 
 
 async def set_main_menu(bot: Bot):
