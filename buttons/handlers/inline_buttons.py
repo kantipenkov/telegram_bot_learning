@@ -1,13 +1,12 @@
 import logging
 import re
 from string import ascii_lowercase
-from typing import Final, Literal
 
 from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import CallbackQuery, InaccessibleMessage, Message
 
-from keyboards.inline_buttons import keyboard
+from keyboards.inline_buttons import OptionCallbackFactory, keyboard
 from lexicon import Commands
 
 logger = logging.getLogger(__name__)
@@ -27,29 +26,28 @@ async def inline_buttons_example(message: Message):
     )
 
 
-def create_option_callback(letter: str) -> None:
-    if len(letter) == 1 and letter.lower() == letter and letter in ascii_lowercase:
+# if you want to catch different options in different handlers you can set up filter like this:
+# @router.callback_query(OptionCallbackFactory.filter(F.letter == "a"))
+@router.callback_query(OptionCallbackFactory.filter())
+async def inline_option(callback: CallbackQuery, callback_data: OptionCallbackFactory):
+    logger.debug(f"Option {callback_data.letter.upper()} is clicked")
+    if not isinstance(callback.message, InaccessibleMessage) and callback.message.text:
+        text = callback.message.text
+        scores = {
+            k: int(v)
+            for k, v in re.findall(
+                r"Option (\w) clicked (\d+) times", callback.message.text
+            )
+        }
 
-        @router.callback_query(F.data == f"option_{letter}")
-        async def option_click(callback: CallbackQuery):
-            logger.debug(f"Option {letter.upper} is clicked")
-            if (
-                not isinstance(callback.message, InaccessibleMessage)
-                and callback.message.text
-            ):
-                text = callback.message.text
-                nums = list(map(int, re.findall(r"(\d+) times", text)))
-                nums[list(ascii_lowercase).index(letter.lower())] += 1
-                await callback.message.edit_text(
-                    text=text_template % tuple(nums),
-                    reply_markup=callback.message.reply_markup,
-                )
-            await callback.answer(text=f"button with option {letter} is clicked")
-
-    else:
-        raise ValueError(
-            "Input %s is invalid. Please pass single lowercase letter" % letter,
+        scores[callback_data.letter.upper()] += 1
+        await callback.message.edit_text(
+            text=text_template % tuple(scores.values()),
+            reply_markup=callback.message.reply_markup,
         )
+    await callback.answer(
+        text=f"button with option {callback_data.letter} is clicked"
+    )  # this shows a popup
 
 
 @router.callback_query(F.data == "reset")
@@ -61,7 +59,3 @@ async def reset_click(callback: CallbackQuery):
                 text=text_template % (0, 0), reply_markup=callback.message.reply_markup
             )
         await callback.answer(text="Reset button is clicked.")
-
-
-create_option_callback("a")
-create_option_callback("b")
