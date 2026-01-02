@@ -1,0 +1,8 @@
+services:
+  formatting:
+    image: formatting
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - .env
