@@ -74,7 +74,7 @@ async def fill_age_err(message: Message):
 
 
 @router.callback_query(
-    StateFilter(FSMFillForm.fill_gender), F.data._in(["male", "female", "undefined"])
+    StateFilter(FSMFillForm.fill_gender), F.data.in_(["male", "female", "undefined"])
 )
 async def fill_gender(callback: CallbackQuery, state: FSMContext):
     await state.update_data(gender=callback.data)
@@ -141,12 +141,12 @@ async def news_subscription(callback: CallbackQuery, state: FSMContext):
     await state.update_data(news=callback.data == "yes")
     if isinstance(callback.message, Message):
         user_data = await state.get_data()
-        callback.message.answer_photo(
+        await callback.message.answer_photo(
             photo=user_data["photo_id"],
-            caption=f"Name: {user_data["name"]}"
-            f"Age: {user_data["age"]}"
-            f"Gender: {user_data["gender"]}"
-            f"Education: {user_data["education"]}"
+            caption=f"Name: {user_data["name"]}\n"
+            f"Age: {user_data["age"]}\n"
+            f"Gender: {user_data["gender"]}\n"
+            f"Education: {user_data["education"]}\n"
             f"Receive news: {user_data["news"]}",
         )
     await state.clear()
