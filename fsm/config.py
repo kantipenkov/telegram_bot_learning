@@ -16,10 +16,16 @@ class LogSettings:
     format: str
 
 
+@dataclass
+class Redis:
+    password: str
+
+
 @dataclass()
 class Config:
     bot: TgBot
     log: LogSettings
+    redis: Redis
 
 
 def _load_config() -> Config:
@@ -29,6 +35,7 @@ def _load_config() -> Config:
     return Config(
         bot=TgBot(token=env("BOT_TOKEN"), admins=env.list("ADMINS", subcast=int)),
         log=LogSettings(level=env("LOG_LEVEL"), format=env("LOG_FORMAT")),
+        redis=Redis(env("REDIS_PASSWORD")),
     )
 
 

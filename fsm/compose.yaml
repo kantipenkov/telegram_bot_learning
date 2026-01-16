@@ -13,12 +13,15 @@ services:
     image: redis:8.4.0
     volumes:
       - redis_data:/data
-    command: redis-server --save 60 1 --loglevel warning
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf", "--requirepass", "${REDIS_PASSWORD}",]
     restart: on-failure
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"
+    environment:
+      - REDIS_PASSWORD="${REDIS_PASSWORD}"
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5

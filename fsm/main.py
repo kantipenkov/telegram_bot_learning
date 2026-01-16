@@ -23,7 +23,7 @@ async def main() -> None:
     except KeyError:
         log_level = log_level_mapping["DEBUG"]
     logging.basicConfig(level=log_level, format=config.log.format)
-    redis = Redis(host="redis")
+    redis = Redis(host="redis", password=config.redis.password)
     storage = RedisStorage(redis=redis)
     bot = Bot(
         token=config.bot.token, default=DefaultBotProperties(parse_mode=ParseMode.HTML)

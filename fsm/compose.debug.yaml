@@ -7,3 +7,28 @@ services:
     command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 main.py "]
     ports:
       - 5678:5678
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+  redis:
+    image: redis:8.4.0
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf", "--requirepass", "${REDIS_PASSWORD}",]
+    restart: on-failure
+    # ports:
+    #   - "6379:6379"
+    environment:
+      - REDIS_PASSWORD="${REDIS_PASSWORD}"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  redis_data:
