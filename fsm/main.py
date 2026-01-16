@@ -4,8 +4,9 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.types import BotCommand, BotCommandScopeDefault
+from aiogram.fsm.storage.redis import RedisStorage
+from aiogram.types import BotCommandScopeDefault
+from redis.asyncio import Redis
 
 from config import config
 from handlers import other, user
@@ -22,7 +23,8 @@ async def main() -> None:
     except KeyError:
         log_level = log_level_mapping["DEBUG"]
     logging.basicConfig(level=log_level, format=config.log.format)
-    storage = MemoryStorage()
+    redis = Redis(host="redis")
+    storage = RedisStorage(redis=redis)
     bot = Bot(
         token=config.bot.token, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
     )
