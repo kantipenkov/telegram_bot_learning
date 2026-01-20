@@ -157,7 +157,7 @@ async def news_subscription(callback: CallbackQuery, state: FSMContext):
 async def news_subscription_err(message: Message):
     await message.answer(
         "Please choose if your wish to receive news by clicking on one of inline buttons below the message or exit the form sending /cancel",
-        reply_markup=education_kb,
+        reply_markup=yes_no_kb,
     )
 
 

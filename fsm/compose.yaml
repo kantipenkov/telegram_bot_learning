@@ -16,8 +16,10 @@ services:
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     command: ["redis-server", "/usr/local/etc/redis/redis.conf", "--requirepass", "${REDIS_PASSWORD}",]
     restart: on-failure
-    # ports:
-    #   - "6379:6379"
+    ports:
+      - "6379:6379"
+    env_file:
+      - .env
     environment:
       - REDIS_PASSWORD="${REDIS_PASSWORD}"
     healthcheck:
