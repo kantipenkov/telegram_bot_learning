@@ -27,7 +27,7 @@ class RedisSettings:
     host: str
     port: int
     db: int
-    user: str
+    username: str
     password: str
 
 
@@ -63,9 +63,12 @@ def load_settings(path: str | None = None) -> Config:
         host=env("REDIS_HOST"),
         port=env.int("REDIS_PORT"),
         db=env.int("REDIS_DATABASE"),
-        user=env("REDIS_USERNAME"),
+        username=env("REDIS_USERNAME"),
         password=env("REDIS_PASSWORD"),
     )
     log_settings = LoggingSettings(level=env("LOG_LEVEL"), format=env("LOG_FORMAT"))
     config = Config(bot=bot, db=db, redis=redis, log=log_settings)
     return config
+
+
+config = load_settings()

@@ -2,3 +2,5 @@ aiogram
 environs
 redis
 psycopg-pool
+psycopg
+psycopg-binary
