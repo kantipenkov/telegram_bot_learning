@@ -1,0 +1,9 @@
+services:
+  fluentexample:
+    image: fluentexample
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: dev
+    env_file:
+      - .env

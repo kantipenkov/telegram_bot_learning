@@ -1,0 +1,12 @@
+services:
+  fluentexample:
+    image: fluentexample
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: debug
+    command: ["sh", "-c", "python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 main.py "]
+    ports:
+      - 5678:5678
+    env_file:
+      - .env
